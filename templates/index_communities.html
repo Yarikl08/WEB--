@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center">{{title}}</h1>
+<a href="index" class="btn btn-secondary">Список мероприятий</a>
+<a href="communities" class="btn btn-secondary">Добавить сообщество</a>
+{% for item in communities%}
+    <h3>Communities # {{item.id}}</h3>
+    <table class="table">
+  <thead>
+    <tr class="table-secondary">
+      <td scope="col" width="100">Тема</td>
+      <td scope="col" width="250">Сообщество</td>
+      <td scope="col" width="400">Описание</td>
+      <td scope="col" class="text-center" width="150">Организатор</td>
+        <td scope="col" class="text-center" width="150">Участники</td>
+        <td scope="col" class="text-center" width="150">Контакты</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-primary">
+      <td scope="row">{{item.topic}}</td>
+        <td scope="row">{{item.title}}</td>
+        <td scope="row">{{item.in_detail}}</td>
+      <td scope="row" class="text-center">{{item.user.surname}} {{item.user.name}}</td>
+      <td scope="row" class="text-center">{{item.members}}</td>
+      <td scope="row" class="text-center">{{item.contacts}}</td>
+    </tr>
+    </tbody>
+</table>
+{% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/communities/{{ item.id }}" class="btn btn-warning">
+            Редактировать
+        </a>
+        <a href="/communities_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+{% endif %}
+{% endfor %}
+{% endblock %}

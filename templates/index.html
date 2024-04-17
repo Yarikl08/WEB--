@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h5 class="text-dark-primary text-start p-2">Развлечения, спорт и новые знакомства ждут вас |
+    Команда геймеров, любители животных?</h5>
+<h5 class="text-primary text-center">Поход в кино, театр, на дискотеку, совместные экскурсии? |
+    Волейбол, футбол, пробежка, спортзал?</h5>
+<figure class="figure">
+  <img src="/static/img/1.jpg" class="figure-img img-fluid rounded">
+    <img src="/static/img/2.jpg" class="figure-img img-fluid rounded">
+    <img src="/static/img/3.jpg" class="figure-img img-fluid rounded">
+    <img src="/static/img/4.jpg" class="figure-img img-fluid rounded">
+  <figcaption class="figure-caption text-primary"></figcaption>
+    <p><a href="carousel" class="link-primary">Галерея фотографий с мероприятий</a></p>
+</figure>
+<h2 class="text-dark-primary text-center">Выбери или создай свое мероприятие!</h2>
+{% if current_user.is_authenticated %}
+    <a href="index_communities" class="btn btn-secondary">Сообщества</a>
+    <a href="events" class="btn btn-secondary">Добавить мероприятие</a>
+    <a Как круто ты проводишь свободное время? Поделись своей фотографией с мероприятия :)></a>
+    <button type="button" class="btn btn-light">Загрузить фото с мероприятия</button>
+{% endif %}
+{% for item in events%}
+    <h3>Мероприятие # {{item.id}}</h3>
+    <table class="table table-hover">
+  <thead>
+    <tr class="table-success">
+      <td scope="col" width="100">Тема</td>
+      <td scope="col" width="400">Мероприятие</td>
+      <td scope="col">Организатор</td>
+      <td scope="col" class="text-center">Возраст</td>
+      <td scope="col" width="100">Площадка</td>
+        <td scope="col" width="50">Начало</td>
+        <td scope="col" width="50">Окончание</td>
+        <td scope="col" width="100">Закончено?</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-light">
+      <td scope="row">{{item.topic}}</td>
+        <td scope="row">{{item.community}}</td>
+      <td scope="row">{{item.user.surname}} {{item.user.name}}</td>
+      <td scope="row" class="text-center">{{item.age_limit}}+</td>
+      <td scope="row" class="text-center">{{item.area}}</td>
+        <td scope="row" class="text-center">{{item.start_date}}</td>
+        <td scope="row" class="text-center">{{item.end_date}}</td>
+      {% if item.is_finished == False %}
+          <td scope="row" class="table-warning">Is not finished</td>
+      {% else %}
+          <td scope="row" class="table-danger">Is finished</td>
+      {% endif %}
+    </tr>
+    </tbody>
+</table>
+{% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/events/{{ item.id }}" class="btn btn-warning">
+            Редактировать
+        </a>
+        <a href="/events_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+{% endif %}
+{% endfor %}
+{% endblock %}
